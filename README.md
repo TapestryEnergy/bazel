@@ -1,3 +1,17 @@
+# Tapestry Bazel
+
+An experiment by `@aryehh` for building remote workers.
+
+## Updgrading
+
+Upgrade by rebasing on a given [bazel release](https://github.com/bazelbuild/bazel)
+
+## What this contains
+
+Currently, `bazel-6.1.2` with some Docker and Cloudbuild configuration.
+
+----
+
 # [Bazel](https://bazel.build)
 
 *{Fast, Correct} - Choose two*
