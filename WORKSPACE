@@ -1,5 +1,45 @@
 workspace(name = "io_bazel")
 
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+http_archive(
+    name = "rules_pkg",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_pkg/releases/download/0.9.0/rules_pkg-0.9.0.tar.gz",
+        "https://github.com/bazelbuild/rules_pkg/releases/download/0.9.0/rules_pkg-0.9.0.tar.gz",
+    ],
+    sha256 = "335632735e625d408870ec3e361e192e99ef7462315caa887417f4d88c4c8fb8",
+)
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "rules_oci",
+    sha256 = "1c4730c85b90e793679ec534d47878bc19ecc267e43b21cf050081c7fe025af7",
+    strip_prefix = "rules_oci-0.5.0",
+    url = "https://github.com/bazel-contrib/rules_oci/releases/download/v0.5.0/rules_oci-v0.5.0.tar.gz",
+)
+
+load("@rules_oci//oci:dependencies.bzl", "rules_oci_dependencies")
+
+rules_oci_dependencies()
+
+load("@rules_oci//oci:repositories.bzl", "LATEST_CRANE_VERSION", "LATEST_ZOT_VERSION", "oci_register_toolchains")
+
+oci_register_toolchains(
+    name = "oci",
+    crane_version = LATEST_CRANE_VERSION,
+)
+
+load("@rules_oci//oci:pull.bzl", "oci_pull")
+
+oci_pull(
+    name = "distroless_java",
+    image = "gcr.io/distroless/java11-debian11@sha256:362cef8ad264ed16aa52cce12e01103a754e8cad1db5b159271c0218b7ea7e77",
+    platforms = [
+        "linux/amd64",
+    ]
+)
+
 load("//tools/build_defs/repo:http.bzl", "http_archive", "http_file", "http_jar")
 load("//:distdir.bzl", "dist_http_archive", "dist_http_file", "distdir_tar")
 load("//:distdir_deps.bzl", "DIST_DEPS")
